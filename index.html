@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Agus 9F - Link Jadi Video</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui}
+body{margin:0;background:#050505;color:#fff;min-height:100vh}
+.bg{position:fixed;inset:0;background:radial-gradient(circle at top,#a855f7 0%,#000 60%);opacity:.6;z-index:-1}
+.container{max-width:420px;margin:0 auto;padding:24px;text-align:center}
+.avatar{width:96px;height:96px;border-radius:50%;border:3px solid #a855f7;margin:20px auto 12px;background:linear-gradient(135deg,#a855f7,#ec4899);display:grid;place-items:center;font-size:40px}
+h1{margin:6px 0;font-size:22px}
+.sub{color:#aaa;font-size:13px;margin-bottom:18px}
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);backdrop-filter:blur(12px);border-radius:18px;padding:14px;margin:12px 0;text-align:left}
+.card input{width:100%;padding:14px;background:#000;border:1px solid #333;border-radius:12px;color:#fff}
+.btn{width:100%;padding:14px;background:linear-gradient(135deg,#a855f7,#ec4899);border:none;border-radius:12px;font-weight:900;color:#fff;margin-top:10px}
+.links{display:flex;flex-direction:column;gap:10px;margin-top:20px}
+.link-item{display:flex;align-items:center;gap:12px;padding:14px;background:#111;border:1px solid #222;border-radius:14px;text-decoration:none;color:#fff;transition:.2s}
+.link-item:hover{transform:scale(1.02);border-color:#a855f7}
+.link-item .icon{width:44px;height:44px;border-radius:10px;background:#222;display:grid;place-items:center;font-size:20px}
+.video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.video-grid video{width:100%;aspect-ratio:9/16;border-radius:12px;background:#000}
+</style>
+</head>
+<body>
+<div class="bg"></div>
+<div class="container">
+<div class="avatar">A</div>
+<h1>Agus - Kelas 9F</h1>
+<div class="sub">🔗 Semua Link Jadi Video 🎬<br>Subang • Developer Muda</div>
+
+<div class="card">
+<b>Paste Link Baru:</b>
+<input id="url" placeholder="https://tiktok.com/@.../video/...">
+<button class="btn" onclick="addLink()">TAMBAH JADI VIDEO +</button>
+</div>
+
+<div class="links" id="links">
+<a class="link-item" href="#"><div class="icon">🎵</div><div><b>TikTok Gue</b><br><small style="color:#888">@agus.9f • 12 video</small></div></a>
+<a class="link-item" href="#"><div class="icon">📸</div><div><b>Instagram Reels</b><br><small style="color:#888">@agus9f • Video terbaru</small></div></a>
+<a class="link-item" href="#"><div class="icon">▶️</div><div><b>YouTube Channel</b><br><small style="color:#888">Tutorial & Vlog Sekolah</small></div></a>
+</div>
+
+<div id="videos" class="video-grid"></div>
+</div>
+
+<script>
+function addLink(){
+ let u=document.getElementById('url').value;
+ if(!u) return alert('Paste link dulu!');
+ let id=Date.now();
+ let v=document.createElement('video');
+ v.controls=true; v.loop=true; v.src='';
+ v.onclick=()=>window.open(u,'_blank');
+ document.getElementById('videos').prepend(v);
+ 
+ // Auto fetch if tiktok
+ if(u.includes('tiktok.com')){
+   fetch('https://www.tikwm.com/api/?url='+encodeURIComponent(u)).then(r=>r.json()).then(d=>{
+     if(d.data?.play) v.src=d.data.play;
+   });
+ }
+ document.getElementById('url').value='';
+}
+</script>
+</body>
+</html>
